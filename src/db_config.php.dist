@@ -1,0 +1,6 @@
+<?php
+
+$config['db']['host']   = "localhost";
+$config['db']['dbname'] = "pwdcheck";
+$config['db']['user']   = "pwdcheck";
+$config['db']['pass']   = "mysql_pass";
