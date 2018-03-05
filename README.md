@@ -45,6 +45,7 @@ The example is based of the passwords currently available from https://haveibeen
     RENAME TABLE pwdlist to pwdlist_old, pwdlist_new to pwdlist;
     DROP TABLE pwdlist_old;
 
+This SQL create an empty copy of the pwdlist table, fill that copy with data and then switches the two tables (this is an atomic procedure), and then deletes the old password table.
 
 
 ## Webserver Configuration
