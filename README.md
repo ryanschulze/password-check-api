@@ -27,21 +27,24 @@ We will be using MySQL. First we create the database and an user to access it (c
 Now we will import the password data (change the path/filenames of your password data if necessary).
 The example is based of the passwords currently available from https://haveibeenpwned.com/Passwords
 
-    ALTER TABLE pwdlist DISABLE KEYS;
+    CREATE TABLE pwdlist_new LIKE pwdlist;
+    ALTER TABLE pwdlist_new DISABLE KEYS;
 
-    LOAD DATA LOCAL INFILE '/var/tmp/pwned-passwords-1.0.txt'
-    INTO TABLE pwdlist
-    LINES TERMINATED BY "\n";
+    LOAD DATA LOCAL INFILE '/var/tmp/pwned-passwords-2.0.txt'
+    INTO TABLE pwdlist_new
+    FIELDS
+      TERMINATED BY ":"
+    LINES
+      TERMINATED BY "\n"
+    ( @hash, @counter )
+    SET
+      pwd=@hash
+    ;
 
-    LOAD DATA LOCAL INFILE '/var/tmp/pwned-passwords-update-1.txt'
-    INTO TABLE pwdlist
-    LINES TERMINATED BY "\n";
+    ALTER TABLE pwdlist_new ENABLE KEYS;
+    RENAME TABLE pwdlist to pwdlist_old, pwdlist_new to pwdlist;
+    DROP TABLE pwdlist_old;
 
-    LOAD DATA LOCAL INFILE '/var/tmp/pwned-passwords-update-2.txt'
-    INTO TABLE pwdlist
-    LINES TERMINATED BY "\n";
-
-    ALTER TABLE pwdlist ENABLE KEYS;
 
 
 ## Webserver Configuration
